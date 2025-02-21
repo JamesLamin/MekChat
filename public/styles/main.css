@@ -1,0 +1,377 @@
+/* Base Styles */
+:root {
+    --primary-color: #075E54;
+    --secondary-color: #128C7E;
+    --light-green: #25D366;
+    --chat-bg: #DCF8C6;
+    --received-msg-bg: #FFFFFF;
+    --text-primary: #000000;
+    --text-secondary: #667781;
+    --divider-color: #E9EDEF;
+    --bg-primary: #111B21;
+    --bg-secondary: #202C33;
+    --bg-hover: #2A3942;
+    --border-color: rgba(134, 150, 160, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+body.dark {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* App Container */
+.app-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    height: 100vh;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.app-container.dark {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* Top Navigation */
+.top-nav {
+    background-color: var(--primary-color);
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.top-nav.dark {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.top-nav h1 {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.top-nav-icons {
+    display: flex;
+    gap: 24px;
+}
+
+.top-nav-icons i {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Tab Navigation */
+.tab-nav {
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: space-around;
+    padding: 0 16px;
+}
+
+.tab-nav.dark {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.tab-nav button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 16px 0;
+    font-size: 15px;
+    position: relative;
+    cursor: pointer;
+}
+
+.tab-nav button.active {
+    color: white;
+}
+
+.tab-nav button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: white;
+}
+
+.tab-nav button.dark {
+    color: var(--text-primary);
+}
+
+.tab-nav button.active.dark::after {
+    background-color: var(--text-primary);
+}
+
+/* Chat List */
+.chat-list {
+    overflow-y: auto;
+    height: calc(100vh - 112px);
+}
+
+.chat-item {
+    display: flex;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--divider-color);
+    cursor: pointer;
+}
+
+.chat-item:hover {
+    background-color: #f5f6f6;
+}
+
+.chat-item.dark {
+    background-color: var(--bg-secondary);
+}
+
+.chat-item.dark:hover {
+    background-color: var(--bg-hover);
+}
+
+.chat-avatar {
+    width: 49px;
+    height: 49px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+}
+
+.chat-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+}
+
+.chat-name {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.chat-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.chat-message {
+    color: var(--text-secondary);
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.chat-message i {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.chat-badges {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.unread-badge {
+    background-color: var(--light-green);
+    color: white;
+    border-radius: 50%;
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    padding: 0 6px;
+}
+
+.muted-icon {
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+/* Floating Action Button */
+.fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background-color: var(--light-green);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.fab:hover {
+    transform: scale(1.05);
+}
+
+.fab i {
+    font-size: 24px;
+}
+
+/* Status Indicators */
+.status-unread {
+    border: 2px solid var(--light-green);
+}
+
+.status-seen {
+    border: 2px solid var(--text-secondary);
+}
+
+/* Loading Spinner */
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loading.dark {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.spinner.dark {
+    border: 4px solid var(--text-secondary);
+    border-top-color: var(--primary-color);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bg-hover);
+    border-radius: 3px;
+}
+
+/* Buttons */
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Icons */
+.fas, .far {
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .app-container {
+        height: 100vh;
+        width: 100vw;
+    }
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-in-out;
+}

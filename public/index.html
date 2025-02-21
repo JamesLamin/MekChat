@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MekChat</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #128C7E;
+            --secondary-color: #25D366;
+            --bg-color: #fff;
+            --text-color: #333;
+            --border-color: #ddd;
+            --hover-color: #f5f5f5;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #222;
+            --text-color: #fff;
+            --border-color: #444;
+            --hover-color: #333;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .top-nav-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .top-nav-icons i {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 20px;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-nav button {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            color: var(--text-color);
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .tab-nav button.active {
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .chat-list {
+            padding: 20px;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0,0,0,0.1);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <h1>MekChat</h1>
+            <div class="top-nav-icons">
+                <i class="fas fa-camera"></i>
+                <i class="fas fa-search"></i>
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="active">Chats</button>
+            <button>Status</button>
+            <button>Calls</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Chat List -->
+            <div class="chat-list">
+                <!-- Chat items will be dynamically added here -->
+            </div>
+
+            <!-- Chat Container -->
+            <div class="chat-container" style="display: none;">
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <div class="chat-contact">
+                        <img src="" alt="" class="contact-avatar">
+                        <div class="contact-info">
+                            <div class="contact-name"></div>
+                            <div class="contact-status"></div>
+                        </div>
+                    </div>
+                    <div class="chat-actions">
+                        <i class="fas fa-video"></i>
+                        <i class="fas fa-phone"></i>
+                        <i class="fas fa-search"></i>
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+
+                <!-- Message List -->
+                <div class="message-list">
+                    <!-- Messages will be dynamically added here -->
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input-container">
+                    <!-- Quote Reply -->
+                    <div class="quote-reply" style="display: none;">
+                        <div class="quoted-sender"></div>
+                        <div class="quoted-content"></div>
+                        <i class="fas fa-times" onclick="cancelReply()"></i>
+                    </div>
+
+                    <!-- File Preview -->
+                    <div class="file-preview" style="display: none;">
+                        <img src="" alt="">
+                        <div class="file-info">
+                            <div class="file-name"></div>
+                            <div class="file-size"></div>
+                        </div>
+                        <i class="fas fa-times remove-file" onclick="removeFile()"></i>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="chat-input-wrapper">
+                        <div class="input-actions">
+                            <i class="far fa-smile input-action" onclick="toggleEmojiPicker()"></i>
+                            <i class="fas fa-paperclip input-action">
+                                <input type="file" id="fileInput" style="display: none;" 
+                                       accept="image/*,video/*,audio/*,.pdf,.doc,.docx" 
+                                       onchange="handleFileSelect(event)">
+                            </i>
+                        </div>
+                        
+                        <div class="chat-input" contenteditable="true" 
+                             onkeydown="handleInput(event)" 
+                             onpaste="handlePaste(event)" data-placeholder="Message"></div>
+                        
+                        <div class="input-actions">
+                            <i class="fas fa-microphone input-action" onclick="startVoiceRecording()"></i>
+                            <button class="voice-button">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emoji Picker -->
+                <div class="emoji-picker">
+                    <!-- Emoji categories and emojis will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <div class="fab" onclick="startNewChat()">
+            <i class="fas fa-message"></i>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.1.1/dist/index.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
